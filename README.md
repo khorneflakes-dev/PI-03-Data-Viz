@@ -4,52 +4,117 @@
 
 # <h1 align="center">**`Accidentes aéreos`**</h1>
 
-<p align="center">
-<img src="https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2016%2F09%2F15%2F16%2F13%2Fairplane-1671967_1280.jpg"  height=300>
-</p>
+## Reporte de Calidad de Datos
 
-¡Bienvenidos al último proyecto individual de la etapa de labs! En esta ocasión, deberán hacer un trabajo situándose en el rol de un ***Data Analyst***.
+### Datos Nulos o Vacios
 
-<img src = 'https://i.pinimg.com/originals/06/01/4c/06014cb5dbc08b16d3f105d97bc5c85e.png' height = 200>
+Si bien no se encontraron valores nulos o vacios, en el dataset original existen valores con el caracter de interrogacion (?), que a primera vista son el equivalente a valores faltantes o ceros
 
-## **Contexto**
-La **Organización de Aviación Civil Internacional (OACI)**, organismo de la Organización de las Naciones Unidas, quiere investigar en profundidad los accidentes producidos desde inicios del siglo XX. Para ello, les solicita la elaboración de un informe y un dashboard interactivo que recopile tal información. 
+![faltantes](./assets/faltantes.png)
 
-La OACI únicamente cuenta con un dataset sobre datos de accidentes de aviones, pero insta a la consultora de datos -de la que forman parte- que intente cruzar esta información con otras fuentes de su interés. Esto con el objetivo de obtener mayor claridad y consistencia en los fundamentos del estudio.
+| Columna | Faltantes |
+|---------|:----------|
+| Unnamed: 0 | 0 |
+| fecha | 0 |
+| HORA declarada | 1504 |
+| Ruta | 5 |
+| OperadOR | 10 |
+| flight_no | 3682 |
+| route | 762 |
+| ac_type | 13 |
+| registration | 272 |
+| cn_ln | 667 |
+| all_aboard | 17 |
+| PASAJEROS A BORDO | 221 |
+| crew_aboard | 219 |
+| cantidad de fallecidos | 8 |
+| passenger_fatalities | 235 |
+| crew_fatalities | 235 |
+| ground | 44 |
+| summary | 59 |
 
-## **Propuesta de trabajo**
-A raíz de esta solicitud, nuestro Project Manager nos encarga una serie de tareas a cumplir: 
+Otro aspecto que salta a la vista son los nombres de las columnas, se trabajo en el renombre de las mismas
 
-+ Realizar un EDA con el dataset provisto, junto con un reporte de calidad y diccionario de datos
-+ Buscar y relacionar información relevante con los eventos
-+ Crear una base de datos en un motor SQL e ingestar el csv procesado
-+ Elaborar un dashboard e idear un storytelling con el objetivo de presentarlo ante la OACI
-+ Adjuntar todo el trabajo en un repositorio de GitHub
+Asimismo el tipo de datos que tiene el dataset en en casi toda su totalidad la de object
 
+| Columna | dtype |
+|---------|:----------|
+| Unnamed: 0 | int64 |
+| fecha | object |
+| HORA declarada | object |
+| Ruta | object |
+| OperadOR | object |
+| flight_no | object |
+| route | object |
+| ac_type | object |
+| registration | object |
+| cn_ln | object |
+| all_aboard | object |
+| PASAJEROS A BORDO | object |
+| crew_aboard | object |
+| cantidad de fallecidos | object |
+| passenger_fatalities | object |
+| crew_fatalities | object |
+| ground | object |
+| summary | object |
 
-Stack tecnológico:
+Entre las columnas que se consideraron a utilizar para realizar el analisis y posterior dashboard tenemos a la columna de :
+- fecha: los formatos de esta columna expresan la fecha de manera literal
+- fecha ejemplo: September 17, 1908
+- hora_declarada: Descartando los valores faltantes que seran tratados mas adelante esta columna tiene la fecha en distintos formatos y con caracteres ajenos al formato de hora
+- hora_declarada ejemplos: 1718, c:0722, Z 1221...
+- lugar_accidente: en la mayoria de los casos no se especifica el pais del siniestro, si acaso la ciudad o localidad
 
-+ `Python`: EDA + transformaciones 
-+ `SQL`: base de datos
-+ `Power BI` -preferentemente- o `Streamlit`: dashboard
-+ `GitHub`: con un README.md donde se elabore el informe
+Posterior a un trabajo de limpieza y normalizacion se agregaron unas cuantas columnas al dataset
 
-A modo de resumen, se espera que puedan realizar un primer acercamiento al dataset con Python. Allí, crearán un notebook que contendrá un análisis exploratorio y realizarán las transformaciones y el preprocesamiento que consideren pertinentes. Esta etapa debe estar oportunamente documentada y con los comentarios necesarios. Recuerden que Python brinda un recurso muy valioso para este fin -celdas markdown-.
+Las columnas de Anio, Mes, Dia, Pais, Code, Continent
 
-En una instancia posterior, tendrán que ingestar el dataset en un motor SQL de su preferencia. Finalmente, la herramienta de visualización empleada debe conectarse y tomar los datos desde ese motor.
-- - -
+estas 2 ultimas 2 columnas para el ploteo del mapa donde se muestran los siniestros por paises, esto con ayuda de un dataset , [cities.csv](https://github.com/khorneflakes-dev/PI-03-Data-Viz/blob/main/cities.csv), que contiene una lista de todos los paises, ciudades y sus capitales
 
-## ***Recomendaciones finales***
+## Stack Tecnologico
 
-Se hará hincapié en la presentación, comunicación, capacidad analítica y forma de contar una historia con los datos. Para ello, pueden hacer foco en el Workshop `From Data to Viz & Storytelling`.
+- Transformacion y Limpieza: Python, Pandas, Pycountry
+- ORM: SQLAlchemy
+- DB: SQLite
+- Dashboard: Python, Dash, Plotly, Pandas, SCSS
+- Deploy: Railway App
 
-¡No deben mostrar nada de código en la exposición!
+## Resultados
 
-Recordamos que sean puntuales y prueben el correcto funcionamiento de las herramientas empleadas **antes** de ingresar a la meet.
+Se trabajo con SQLAlchemy para obtener una base de datos local, [database.db](https://github.com/khorneflakes-dev/PI-03-Data-Viz/blob/main/data_viz.db)
 
-La **DEMO**, donde defenderán el proyecto, se realizará el día jueves o viernes. Estar atentos a su *calendar* para ver qué día y horario les corresponde. Tendrá una duración máxima de 15 minutos -entre puesta en escena y devolución del corrector asignado-. Así que es importante que sepan gestionar bien su tiempo y tengan un speech ya preparado de, aproximadamente, unos 9/11 minutos de duración.
+En este notebook se detalla el flujo de trabajo de limpieza y carga del dataset a nua base de datos [EDA.ipynb](https://github.com/khorneflakes-dev/PI-03-Data-Viz/blob/main/EDA.ipynb)
 
+El analisis de las datos procesados y la posterior construccion en un dashboard interactivo se detalla en el siguiente script [app.py](https://github.com/khorneflakes-dev/PI-03-Data-Viz/blob/main/app.py)
 
+Y como paso final se hizo el deplay en Railway, [Dashboard Link](https://icao-dashboard.up.railway.app)
 
+## Diccionario de Datos
 
+| Columna | Descripcion |
+|---------|:------------|
+| index | nro de Indice en el Dataset |
+| fecha | fecha del siniestro |
+| hora_declarada | hora del siniestro |
+| lugar_accidente | lugar del accidente |
+| operador | tipo de avion |
+| vuelo_nro | nro del vuelo |
+| ruta | desde y hacia donde se dirigia el avion |
+| tipo_avion | modelo del avion |
+| registro | registro del avion |
+| cn_ln | numero de serie del avion |
+| total_a_bordo | total de personas a bordo, incluidos personal y pasajeros |
+| pasajeros_a_bordo | total de pasajeros a bordo |
+| tripulacion_a_bordo | total de tripulantes a bordo |
+| cantidad_de_fallecidos | total de fallecidos incluidos personal y pasajeros |
+| pasajeros_fallecidos | total solo pasajeros fallecidos |
+| tripulacion_fallecidos | total solo tripulacion fallecida |
+| fallecidos_en_tierra | personas ajenas a los pasajeros y/o tripulacion que murieron en tierra por el accidente |
+| resumen | breve descripcion del accidente |
+| anio | anio del accidente |
+| mes | mes del accidente |
+| dia | dia del accidente |
+| pais | pais donde se estrello el avion |
+| code | codigo del pais segun formato ISO 3166-1 alpha-3 |
+| continent | nombre del continente donde se produjo el siniestro |
 
