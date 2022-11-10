@@ -3,4 +3,5 @@ plotly
 gunicorn
 pandas
 nbformat
-fuckit
+SQLAlchemy
+pycountry-convert
